@@ -1,3 +1,0 @@
-hi
-this is a new activity 3
-Time to whine about git again!
