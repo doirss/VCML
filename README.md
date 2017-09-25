@@ -1,11 +1,23 @@
-# VCML
+# VCML: ValueCentric Machine Learning Project
 
-Step 1: Open up a terminal in mac or linux
+This is a machine learning proof of concept that fuzzy matches location data.
 
-Step 2: Make sure you have a .csv file that has 2 columns or else the program will not run.
+# Usage
 
-Step 3: Type python3 vcml.py "thecsvfile.csv" without the "" to execute the program.
+This program is run via command line with python>=3.6
 
-Step 4: Wait for the program to finish running
+## Training
 
-Step 5: Type exit in terminal to exit the terminal
+When training the model, run:
+
+	# py VCML.py -train <training_data.csv>
+
+Which will output a training.txt file containing model used, runtime, and operations performed
+
+## Testing
+
+To test the results of the current model, run:
+	
+	# py VCML.py -test <test_data.csv> <answer_data.csv>
+
+Which will output various statistics to testing.txt
