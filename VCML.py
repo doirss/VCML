@@ -25,7 +25,7 @@ def parse():
     if args.train is not None:
         return args.train, 1
     elif args.test is not None:
-        return args.test, 3
+        return args.test, 2
 
 
 def train(filename):
