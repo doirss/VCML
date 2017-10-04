@@ -1,11 +1,47 @@
 import csv
 import numpy as np
+import tensorflow as tf
+from sklearn.cross_validation import train_test_split
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import roc_curve
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.feature_extraction.text import CountVectorizer
 import pandas as pd
+from sklearn.naive_bayes import MultinomialNB, GaussianNB
+from sklearn import metrics, model_selection
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import LabelEncoder
+import random
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
 
-with open('ml_training_data.csv') as csvfile:
+# trainingData = "ml_training_data_copy.csv"
+# names = ['RAW_NAME1''RAW_NAME2','RAW_ADDRESS1','RAW_ADDRESS2','RAW_CITY','RAW_STATE','RAW_ZIPCODE','TARGET_LOC_ID']
+# dataset = pd.read_csv(trainingData)
+# #
+# #print(dataset.shape)
+# #print(dataset.head(20))
+# # #print(dataset.groupby('TARGET_LOC_ID').size())
+# print(dataset.columns)
+
+#instantiate with default parameter
+nb = MultinomialNB()
+with open('ml_test_data_copy.csv') as csvfile:
     readCSV = csv.reader(csvfile, delimiter=",")
-    #print(readCSV)
+
+    locations = []
+    for row in readCSV:
+        location = row[0]
+        locations.append(location)
+    X_test = locations
+
+with open('ml_training_data_copy.csv') as csvfile:
+    readCSV = csv.reader(csvfile, delimiter=",")
+
+
     locations = []
     location_IDs = []
     for row in readCSV:
@@ -14,29 +50,55 @@ with open('ml_training_data.csv') as csvfile:
 
         locations.append(location)
         location_IDs.append(location_ID)
-
     dict_data = dict(zip(locations, location_IDs))
-    #print (dict_data)
-    X = dict_data.keys()
-    y = dict_data.values()
+
+    #X_train = dict_data.keys()
+    X_train = locations
+    #y_train = dict_data.values()
+    y_train = location_IDs
+
+    # split X and y into train and test data
+    X_train1, X_test1, y_train1, y_test1 = train_test_split(X_train, y_train, random_state=1)
+
 
     vect = CountVectorizer()
-    #learn vocabulary of the trainig data
-    vect.fit(X)
-    #examine the fitted vocabulary,
-    vect.get_feature_names()
-    #transform training data inot document term matrix
-    X_dtm = vect.transform(X)
-    #print(X_dtm)
-    #convert sparse matrix to a dense matrix
-    X_dtm.toarray()
-    #representing text as numerical data
-    pd.DataFrame(X_dtm.toarray(), columns=vect.get_feature_names())
+    # learn vocabulary of the trainig data
+    vect.fit(X_train1)
+    # examine the fitted vocabulary,
+    print(vect.get_feature_names())
+    # transform training data inot document term matrix
+    X_train_dtm = vect.transform(X_train1)
+    # print(X_train_dtm.shape)
+    # convert sparse matrix to a dense matrix
+    X_train_dtm.toarray()
+    # representing text as numerical data examine the vocabulary and document-term matrix together
+    pd.DataFrame(X_train_dtm.toarray(), columns=vect.get_feature_names())
 
-    simple_test = ["ZIP CODE SALESUT84087-2144"]
-    simple_test_dtm = vect.transform(simple_test)
-    simple_test_dtm.toarray()
-    pd.DataFrame(simple_test_dtm.toarray(), colums = vect.get_feature_names())
+    #X_test = ["ZIP CODE SALESUT84087-2144"]
+    X_test_dtm = vect.transform(X_test1)
+    X_test_dtm.toarray()
+    #print (X_test_dtm)
+    pd.DataFrame(X_test_dtm.toarray(), columns = vect.get_feature_names())
+
+    # train the model using X_train_dtm
+    nb.fit(X_train_dtm, y_train1)  # y_train
+    #text_clf = Pipeline([('vect', CountVectorizer()), ('clf', MultinomialNB())])
+    #text_clf = text_clf.fit(X_train, dict_data.target)
+
+
+    # make class prediction for X_test_dtm
+    y_predict_class = nb.predict(X_test_dtm)
+
+    # calculate accuracy of class prediction
+    print(metrics.accuracy_score(y_test1, y_predict_class))
+
+    # print the confusion metrix
+    #metrics.confusion_metrix(y_test1, y_predict_class)
+
+
+
+
+
 
 
 
