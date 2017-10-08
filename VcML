@@ -92,55 +92,7 @@ with open('ml_training_data_copy.csv') as csvfile:
     accuracy = metrics.accuracy_score(y_test1, y_predict_class)
     print("Accuracy: %2f%%" %(accuracy *100.0))
 
-# trainingData = "ml_training_data_copy.csv"
-# names = ['RAW_NAME1''RAW_NAME2','RAW_ADDRESS1','RAW_ADDRESS2','RAW_CITY','RAW_STATE','RAW_ZIPCODE','TARGET_LOC_ID']
-# dataset = pd.read_csv(trainingData)
-# #
-# #print(dataset.shape)
-# #print(dataset.head(20))
-# # #print(dataset.groupby('TARGET_LOC_ID').size())
-# print(dataset.columns)
 
-
-# names = ['RAW_NAME1','RAW_NAME2','RAW_ADDRESS1','RAW_ADDRESS2','RAW_CITY','RAW_STATE','RAW_ZIPCODE','TARGET_LOC_ID']
-# data = pd.read_csv("ml_training.csv", names=names)
-#
-# feature_col = ['RAW_NAME1','RAW_NAME2','RAW_ADDRESS1','RAW_ADDRESS2','RAW_CITY','RAW_STATE','RAW_ZIPCODE']
-# X = data[feature_col]
-# print(X)
-# y = data.TARGET_LOC_ID
-# print(y.shape)
-#
-#     # split X and y into train and test data
-# X_train1, X_test1, y_train1, y_test1 = train_test_split(X, y, random_state=0)
-#
-#
-# vect = TfidfVectorizer(stop_words='english')
-#
-#     # transform training data inot document term matrix
-# X_train_dtm = vect.fit_transform(X_train1)
-#     # print(X_train_dtm.shape)
-#     # representing text as numerical data examine the vocabulary and document-term matrix together
-# #pd.DataFrame(X_train_dtm.toarray(), columns=vect.get_feature_names())
-#
-#
-# X_test_dtm = vect.transform(X_test1)
-# #pd.DataFrame(X_test_dtm.toarray(), columns = vect.get_feature_names())
-#
-#     # train the model using X_train_dtm
-# nb.fit(X_train_dtm, y_train1)  # y_train
-#     #text_clf = Pipeline([('vect', CountVectorizer()), ('clf', MultinomialNB())])
-#     #text_clf = text_clf.fit(X_train, dict_data.target)
-#
-#
-#     # make class prediction for X_test_dtm
-# y_predict_class = nb.predict(X_test_dtm)
-#
-#     # calculate accuracy of class prediction
-# print(metrics.accuracy_score(y_test1, y_predict_class))
-#
-#     # print the confusion metrix
-#     #metrics.confusion_metrix(y_test1, y_predict_class)
 
 
 
