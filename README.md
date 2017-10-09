@@ -10,9 +10,9 @@ This program is run via command line with python>=3.6
 
 When training the model, run:
 
-	py VCML.py -train <training_data.csv>
+	python3.6 VCML.py -train ml_training_data_copy.csv
 
-Which will output a training.txt file containing model used, runtime, and operations performed
+Which will output an training accuracy on the dataset and stores in training.txt file containing model used, runtime, operations performed and accuracy percentage.
 
 ## Testing
 
@@ -21,3 +21,5 @@ To test the results of the current model, run:
 	py VCML.py -test <test_data.csv> <answer_data.csv>
 
 Which will output various statistics to testing.txt
+
+
