@@ -1,6 +1,5 @@
 import csv , time
 import numpy as np
-# import tensorflow as tf
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_curve
@@ -13,125 +12,151 @@ from sklearn.pipeline import Pipeline
 from sklearn.datasets import fetch_20newsgroups
 from sklearn import metrics
 from argparse import ArgumentParser
-# # #print(dataset.groupby('TARGET_LOC_ID').size())
-def introduction():
-    print("""
-        ValueCentric Machine Learning Project\n\n
-        Developed by:\n
-        Alexander Archer\n
-        Samrita Malla\n
-        Ming Hann Hsieh (Henry)\n
-    """)
+from sklearn.neighbors import KNeighborsClassifier
 
-def parse():
-    parser = ArgumentParser()
-    parser.add_argument('-train', nargs=1, help="-train <training_data.csv>")
-    parser.add_argument('-test', nargs=2, help="-test <test_data.csv> <answer_data.csv>")
+#Python GUI
+from tkinter import*
+import tkinter as tk
+from tkinter.filedialog import askopenfilename
+import os
 
-    args = parser.parse_args()
+"""GUI"""
 
-    if args.train is not None:
-        return args.train, 1
-    elif args.test is not None:
-        return args.test, 2
+root = Tk()
 
-def train(filename):
+def destroy():
+    root.destroy()
 
-    #instantiate with default parameter
-    nb = MultinomialNB()
-    #instantiate with default parameter
-    nb = MultinomialNB()
+myFormats = [('CSV files', '*.csv')]
 
-    with open(filename) as csvfile:
-        readCSV = csv.reader(csvfile, delimiter=",")
+# def choosefile():
+#     file = tk.filedialog.askopenfile(filetypes=myFormats, mode='r')
 
-        locations = []
-        location_IDs = []
-        for row in readCSV:
-            location = row[0]
-            location_ID = row[7]
+tex = tk.Text(master=root)
+tex.pack(side=tk.RIGHT)
+bop = tk.Frame()
+bop.pack(side=tk.LEFT)
+"""Menu"""
+menubar = Menu(root)
 
-            locations.append(location)
-            location_IDs.append(location_ID)
-        dict_data = dict(zip(locations, location_IDs))
+filemenu = Menu(menubar, tearoff=0)
+# filemenu.add_command(label="Choose File", command=choosefile)
+filemenu.add_command(label="Close", command=destroy)
 
-        #X_train = dict_data.keys()
-        X_train = locations
-        #print(X_train)
-        #y_train = dict_data.values()
-        y_train = location_IDs
-        #print(y_train)
-        # split X and y into train and test data
-        X_train1, X_test1, y_train1, y_test1 = train_test_split(X_train, y_train, random_state=42)
+menubar.add_cascade(label="File", menu=filemenu)
 
-        # print(len(X_train1))
-        # print(len(X_test1))
-        # print(len(y_train1))
-        # print(len(y_test1))
+root.config(menu=menubar)
+"""Menu"""
 
-        vect = CountVectorizer(stop_words='english')
-        # learn vocabulary of the trainig data
-        vect.fit(X_train1)
-        # examine the fitted vocabulary,
-        vf = vect.get_feature_names()
-        # print(vect.get_feature_names())
-        # transform training data inot document term matrix
-        X_train_dtm = vect.transform(X_train1)
-        # print(X_train_dtm)
-        # convert sparse matrix to a dense matrix
-        X_train_dtm.toarray()
-        # representing text as numerical data examine the vocabulary and document-term matrix together
-        pd.DataFrame(X_train_dtm.toarray(), columns=vf)
+"""Window size"""
+root.minsize(width=1000, height=400)
+"""Window size"""
 
-        #X_test = ["ZIP CODE SALESUT84087-2144"]
-        X_test_dtm = vect.transform(X_test1)
-        X_test_dtm.toarray()
-        # print (X_test_dtm)
-        pd.DataFrame(X_test_dtm.toarray(), columns = vf)
+"""Frames and Labels"""
+theLabel2 = Label(root, text="VCML Machine Learning!", bg="orange", fg="white")
+theLabel2.pack(fill=X)
 
-        # train the model using X_train_dtm
-        #nb.fit(X_train_dtm, y_train1)  # y_train
-        logreg = LogisticRegression()
-        logreg.fit(X_train_dtm, y_train1)
-        #text_clf = Pipeline([('vect', CountVectorizer()), ('clf', MultinomialNB())])
-        #text_clf = text_clf.fit(X_train, dict_data.target)
+topFrame = Frame(root)
+topFrame.pack()
+bottomFrame = Frame(root)
+bottomFrame.pack(side = BOTTOM)
+"""Frames and Labels"""
+
+"""Buttons"""
+button1 = Button(topFrame, text="Team Introduction!", bg="purple", fg="white")
+button2 = Button(topFrame, text="Click here for help!",bg="blue", fg="white")
+button3 = Button(topFrame, text="Choose CSV File!", bg="green", fg="white")
+# button4 = Button(bottomFrame, text="Exit", bg="orange", fg="white")
+"""Buttons"""
+
+def cbc(tex):
+    return lambda : introduction(event)
+
+def introduction(event):
+    s = 'ValueCentric Machine Learning Project\n\nDeveloped by:\nAlexander Archer\nSamrita Malla\nMing Hann Hsieh (Henry)\n\n'.format()
+    tex.insert(tk.END, s)
+    tex.see(tk.END)
+
+def help(event):
+    s = 'You have requested help!\n\nChoose a CSV by clicking on the top left!\nSupports up to 6000 lines of data for training!\n\n'.format()
+    tex.insert(tk.END, s)
+    tex.see(tk.END)
+
+def choosefileUI(event):
+    filename = tk.filedialog.askopenfilename()
+    print(len(filename))
+    if filename:
+
+        #instantiate with default parameter
+        nb = MultinomialNB()
+
+        with open(filename) as csvfile:
+            readCSV = csv.reader(csvfile, delimiter=",")
+
+            locations = []
+            location_IDs = []
+            for row in readCSV:
+                location = row[6]
+                location_ID = row[7]
+
+                locations.append(location)
+                location_IDs.append(location_ID)
+
+            X_train = locations
+
+            y_train = location_IDs
+
+            X_train1, X_test1, y_train1, y_test1 = train_test_split(X_train, y_train, random_state=42)
+
+            vect = CountVectorizer(stop_words='english')
+
+            # learn vocabulary of the trainig data
+            vect.fit(X_train1)
+
+            # examine the fitted vocabulary,
+            vf = vect.get_feature_names()
+
+            # transform training data inot document term matrix
+            X_train_dtm = vect.transform(X_train1)
+
+            # convert sparse matrix to a dense matrix
+            X_train_dtm.toarray()
+
+            # representing text as numerical data examine the vocabulary and document-term matrix together
+            pd.DataFrame(X_train_dtm.toarray(), columns=vf)
+
+            X_test_dtm = vect.transform(X_test1)
+            X_test_dtm.toarray()
+
+            pd.DataFrame(X_test_dtm.toarray(), columns = vf)
+
+            # train the model using X_train_dtm
+            logreg = LogisticRegression()
+            knn = KNeighborsClassifier(n_neighbors=1)
+            knn.fit(X_train_dtm, y_train1)
+
+            # make class prediction for X_test_dtm
+            y_predict_class = knn.predict(X_test_dtm)
+
+            # calculate accuracy of class prediction
+            accuracy = metrics.accuracy_score(y_test1, y_predict_class)
+            # print("Accuracy: %2f%%" %(accuracy *100.0))
+
+        s = 'You have successfully chosen a file!\n\nYour Accuracy is %2f%%'%(accuracy *100.0)+'!'
+        tex.insert(tk.END, s)
+        tex.see(tk.END)
 
 
-        # make class prediction for X_test_dtm
-        y_predict_class = logreg.predict(X_test_dtm)
-        # tags = list(set(y_train.tolist()))
-        # probs = y_predict_class.tolist()
-        #print(y_predict_class)
+"""Buttons"""
+button1.bind("<Button-1>",introduction)
+button2.bind("<Button-1>",help)
+button3.bind("<Button-1>",choosefileUI)
 
-        # calculate accuracy of class prediction
-        # print(metrics.accuracy_score(y_test1, y_predict_class))
-        accuracy = metrics.accuracy_score(y_test1, y_predict_class)
-        print("Accuracy: %2f%%" %(accuracy *100.0))
-    print("Finished training the model, outputting to training.txt\n")
-    open("training.txt", "w")
+button1.pack(side=LEFT)
+button2.pack(side=LEFT)
+button3.pack(side=LEFT)
 
+tk.Button(bottomFrame, text="Exit", bg="red", fg="white", command=root.destroy).pack(side=BOTTOM)
+"""Buttons"""
 
-def test(test_data, answer_data):
-    print("Finished testing the model, outputting to testing.txt")
-    open("testing.txt", "w")
-
-
-if __name__ == "__main__":
-
-    introduction()
-
-    filename, nargs = parse()
-
-    if(nargs == 1):
-
-        time.sleep(1)
-        print("Taking in the training data...\n")
-
-        train(filename[0])
-
-    elif(nargs == 2):
-
-        time.sleep(1)
-        print("Testing the model...\n")
-
-        test(filename[0], filename[1])
+root.mainloop()
