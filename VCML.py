@@ -67,7 +67,7 @@ button1 = Button(topFrame, text="Team Introduction!", bg="purple", fg="white")
 button2 = Button(topFrame, text="Click here for help!",bg="blue", fg="white")
 button3 = Button(topFrame, text="Choose CSV File!", bg="green", fg="white")
 # button4 = Button(bottomFrame, text="Exit", bg="orange", fg="white")
-button5 = Button(topFrame, text="Columns needed", bg="yellow",fg="white")
+button5 = Button(topFrame, text="Columns needed", bg="yellow",fg="white",command=self.popup)
 """Buttons"""
 
 def cbc(tex):
@@ -146,7 +146,13 @@ def choosefileUI(event):
         s = 'You have successfully chosen a file!\n\nYour Accuracy is %2f%%'%(accuracy *100.0)+'!'
         tex.insert(tk.END, s)
         tex.see(tk.END)
-        
+
+def popup(self):
+    self.w=choosecols(self.master)
+    self.b["state"]="disabled"
+    self.master.wait_window(self.w.top)
+    self.b["state"]="normal"
+
 def choosecols(event):
     def __init__(self,master):
         top=self.top=Toplevel(master)
