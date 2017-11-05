@@ -16,6 +16,7 @@ from sklearn.neighbors import KNeighborsClassifier
 
 #Python GUI
 from tkinter import*
+from tkinter import ttk
 import tkinter as tk
 from tkinter.filedialog import askopenfilename
 import os
@@ -68,15 +69,27 @@ button2 = Button(topFrame, text="Click here for help!",bg="blue", fg="white")
 button3 = Button(topFrame, text="Choose CSV File!", bg="green", fg="white")
 # button4 = Button(bottomFrame, text="Exit", bg="orange", fg="white")
 button5 = Button(topFrame, text="Columns needed", bg="yellow",fg="white")
-"""Buttons"""
+"""Buttons""" =
+
+CHOSE_COLS = """Choose your columns!"""
 
 def cbc(tex):
     return lambda : introduction(event)
 
 def choosefile(event):
-    s = "Choose columns"
-    tex.insert(tk.END, s)
-    tex.see(tk.END)
+    def __init__(self,master):
+        top=self.top=Toplevel(master)
+        self.l=Label(top,text="Enter Columns")
+        self.l.pack()
+        self.e=Entry(top)
+        self.r=Entry(top)
+        self.e.pack()
+        self.r.pack()
+        self.bu=Button(top,text='Ok',command=self.cleanup)
+        self.bu.pack()
+    def cleanup(self):
+        self.value=self.e.get()
+        self.top.destroy()
 
 def introduction(event):
     s = 'ValueCentric Machine Learning Project\n\nDeveloped by:\nAlexander Archer\nSamrita Malla\nMing Hann Hsieh (Henry)\n\n'.format()
