@@ -67,10 +67,16 @@ button1 = Button(topFrame, text="Team Introduction!", bg="purple", fg="white")
 button2 = Button(topFrame, text="Click here for help!",bg="blue", fg="white")
 button3 = Button(topFrame, text="Choose CSV File!", bg="green", fg="white")
 # button4 = Button(bottomFrame, text="Exit", bg="orange", fg="white")
+button5 = Button(topFrame, text="Columns needed", bg="yellow",fg="white")
 """Buttons"""
 
 def cbc(tex):
     return lambda : introduction(event)
+
+def choosefile(event):
+    s = "Choose columns"
+    tex.insert(tk.END, s)
+    tex.see(tk.END)
 
 def introduction(event):
     s = 'ValueCentric Machine Learning Project\n\nDeveloped by:\nAlexander Archer\nSamrita Malla\nMing Hann Hsieh (Henry)\n\n'.format()
@@ -151,10 +157,12 @@ def choosefileUI(event):
 button1.bind("<Button-1>",introduction)
 button2.bind("<Button-1>",help)
 button3.bind("<Button-1>",choosefileUI)
+button5.bind("<Button-1>",choosecols)
 
 button1.pack(side=LEFT)
 button2.pack(side=LEFT)
 button3.pack(side=LEFT)
+button5.pack(side=LEFT)
 
 tk.Button(bottomFrame, text="Exit", bg="red", fg="white", command=root.destroy).pack(side=BOTTOM)
 """Buttons"""
