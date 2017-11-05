@@ -85,7 +85,7 @@ def choosefile(event):
         self.r=Entry(top)
         self.e.pack()
         self.r.pack()
-        self.bu=Button(top,text='Ok',command=self.cleanup)
+        self.bu=Button(top,text='Done',command=self.cleanup)
         self.bu.pack()
     def cleanup(self):
         self.value=self.e.get()
