@@ -146,6 +146,7 @@ def choosefileUI(event):
         s = 'You have successfully chosen a file!\n\nYour Accuracy is %2f%%'%(accuracy *100.0)+'!'
         tex.insert(tk.END, s)
         tex.see(tk.END)
+        
 def choosecols(event):
     def __init__(self,master):
         top=self.top=Toplevel(master)
